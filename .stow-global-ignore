@@ -11,13 +11,25 @@ CVS
 _darcs
 \.hg
 
-\.git
-\.gitignore
-\.gitinclude
-
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
 ^/README.*
 ^/LICENSE.*
 ^/COPYING
+
+# ignoring the git type of file
+\.git
+\.gitignore
+\.gitinclude
+
+# ignoring the .vscode subdirectory
+\.vscode
+
+# Ignore all .nix files
+^/*.nix
+
+# # Unignore the specific file
+# !.config/home-manager/home.nix
+# !.config/home-manager
+# !.config
