@@ -35,6 +35,13 @@ fi
 ncolors=$(tput colors)
 if [[ -n "$ncolors" && "$ncolors" -gt 2 ]]; then
 	PS1='[\[\033[1;33m\]\t\[\033[00m\]] \[\033[1;32m\]\u\[\033[0m\]@\[\033[1;32m\]\h\[\033[00m\]:\[\033[1;34m\]\w\[\033[00m\]\$ '        
+
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    NO_COLOR='\033[0m'
+
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
@@ -45,7 +52,6 @@ else
     PS1='[\t] \u@\h:\w\$ '
 fi
 
-unset color_prompt ncolors
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -55,6 +61,8 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+
+source ~/.config/assets/scripts/preview.sh
 
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 alias cat='bat --color=always --line-range=:500 --pager=never'
@@ -87,3 +95,5 @@ fi
 
 export PUID=$(id -u)
 export GUID=$(id -g)
+
+unset color_prompt ncolors
