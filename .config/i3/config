@@ -104,6 +104,8 @@ assign [class="(?i)thunderbird"] $ws4
 assign [class="(?i)signal"] $ws4
 assign [class="(?i)whatsapp-for-linux"] $ws4
 assign [class="(?i)obs"] $ws4
+assign [class="(?i)steam"] $ws4
+assign [class="(?i)steamwebhelper"] $ws4
 
 # workspace 5
 assign [class="(?i)org.gnome.Nautilus"] $ws5
