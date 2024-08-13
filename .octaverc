@@ -1,3 +1,8 @@
 # Run by octave every time the program starts
+
+#| Load all packages installed
 pkg load linear-algebra
 pkg load symbolic
+
+#| go to the documents folder
+cd("~/Documents");
