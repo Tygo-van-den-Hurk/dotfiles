@@ -1,8 +1,11 @@
 [user]
-	name = St-h123
-	email = hazels.05.remount@icloud.com
+	name = Tygo van den Hurk
+	email = 91738110+Tygo-van-den-Hurk@users.noreply.github.com
+    signingkey = 1AAE628A2D49059717AEA7F87CA2CBB275058A44
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
 [init]
 	defaultBranch = main
+[commit]
+    gpgSign = true
