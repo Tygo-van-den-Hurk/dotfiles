@@ -1,0 +1,3 @@
+# Run by octave every time the program starts
+pkg load linear-algebra
+pkg load symbolic
