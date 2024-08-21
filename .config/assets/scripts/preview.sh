@@ -22,7 +22,7 @@ function preview() {
     fi
     
     case "$extension" in
-        jpg | jpeg | png | gif | svg )
+        jpg | jpeg | png | gif | svg | ico )
             tiv $1
             ;;
         txt | md | \
