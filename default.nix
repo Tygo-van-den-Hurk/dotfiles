@@ -1,11 +1,11 @@
-## 
+## The entry point when importing my dot files from the System NixOS flake. The point is to act as the home.nix flake.
 
 arguments @ { config, pkgs, lib, machine-settings, ... } : ( builtins.trace "Loading: ${toString ./.}..." { 
     
+    imports = [ ./nix ];
+
     programs.home-manager.enable = true;
     home = {
-
-        file."test.txt.hom".text = "This is a rebrand!";
         stateVersion = "24.05";
     };    
 })
