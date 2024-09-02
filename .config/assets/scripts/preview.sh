@@ -27,7 +27,7 @@ function preview() {
             ;;
         txt | md | \
         log | logs | \
-        yml | yaml | config | conf |  toml | \
+        yml | yaml | config | conf |  toml | json | \
         nix | java | sh | c | h | js | ts | rs )
             bat --color=always --line-range=:500 --pager=never $1
             ;;
