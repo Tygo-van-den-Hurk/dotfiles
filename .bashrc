@@ -26,15 +26,23 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
+
+alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+alias cat='bat --color=always --line-range=:500 --pager=never'
+
+alias ls="ls -l --group-directories-first"
+alias ll='ls -alF --group-directories-first'
+alias l='ls'
+
+alias ".."="cd .."
+alias "cd.."="cd .."
+
+alias hibernate='systemctl hibernate'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Check for color support and output colored message if supported
 ncolors=$(tput colors)
 if [[ -n "$ncolors" && "$ncolors" -gt 2 ]]; then
-	PS1='[\[\033[1;33m\]\t\[\033[00m\]] \[\033[1;32m\]\u\[\033[0m\]@\[\033[1;32m\]\h\[\033[00m\]:\[\033[1;34m\]\w\[\033[00m\]\$ '        
 
     RED='\033[0;31m'
     GREEN='\033[0;32m'
@@ -42,7 +50,9 @@ if [[ -n "$ncolors" && "$ncolors" -gt 2 ]]; then
     BLUE='\033[0;34m'
     NO_COLOR='\033[0m'
 
-    alias ls='ls --color=auto'
+	PS1='[\[\033[1;33m\]\t\[\033[00m\]] \[\033[1;32m\]\u\[\033[0m\]@\[\033[1;32m\]\h\[\033[00m\]:\[\033[1;34m\]\w\[\033[00m\]\$ '        
+
+    alias ls='ls --color=auto -l --group-directories-first'
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
@@ -52,28 +62,7 @@ else
     PS1='[\t] \u@\h:\w\$ '
 fi
 
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
 source ~/.config/assets/scripts/preview.sh
-
-alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-alias cat='bat --color=always --line-range=:500 --pager=never'
-
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-alias hibernate='systemctl hibernate'
-
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -88,12 +77,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export PUID=$(id -u)
+export GUID=$(id -g)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Overrides if packages are present ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+if command -v eza >/dev/null 2>&1; then
+    eza_ignored_files="--ignore-glob 'Desktop|Documents|Downloads|Music|Pictures|Public|Templates|Videos|VirtualBox VMs'"
+    eza_options=" --no-quotes --git --long --no-user --no-time --total-size --group-directories-first --icons"
+    alias ls="eza $eza_options $eza_ignored_files"
+    unset eza_options eza_ignored_files
+fi
+
+if command -v zoxide >/dev/null 2>&1; then
+    # export _ZO_ECHO="1"
+    export _ZO_FZF_OPTS="--preview 'ls {}'"
+    alias cd="z"
+    eval "$(zoxide init bash)"
+fi
+
 # if oh my posh is installed
 if command -v oh-my-posh >/dev/null 2>&1; then
     eval "$(oh-my-posh --init --shell bash --config ~/.poshthemes/Oh-My-Posh/similar-to-bash.omp.json)"
 fi
-
-export PUID=$(id -u)
-export GUID=$(id -g)
-
-unset color_prompt ncolors
