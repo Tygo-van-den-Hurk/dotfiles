@@ -84,7 +84,7 @@ export GUID=$(id -g)
 
 if command -v eza >/dev/null 2>&1; then
     eza_ignored_files="--ignore-glob 'Desktop|Documents|Downloads|Music|Pictures|Public|Templates|Videos|VirtualBox VMs'"
-    eza_options=" --no-quotes --git --long --no-user --no-time --total-size --group-directories-first --icons"
+    eza_options=" --no-quotes --git --long --no-time --smart-group --group-directories-first --icons"
     alias ls="eza $eza_options $eza_ignored_files"
     unset eza_options eza_ignored_files
 fi
