@@ -9,8 +9,16 @@ function preview() {
     fi
 
     if [ -d "$1" ]; then
-        ls -l $1
-        return 0
+
+        if command -v eza >/dev/null 2>&1; then
+            eza_ignored_files="--ignore-glob 'Desktop|Documents|Downloads|Music|Pictures|Public|Templates|Videos|VirtualBox VMs'"
+            eza_options=" --no-quotes --git --long --no-time --smart-group --group-directories-first --icons"
+            eval "eza $eza_options $eza_ignored_files"
+            unset eza_options eza_ignored_files
+            return 0
+        fi
+        
+        return ls -l 
     fi
 
     filename=$(basename -- "$1")
