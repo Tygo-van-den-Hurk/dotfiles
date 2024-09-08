@@ -94,6 +94,7 @@ assign [class="(?i)DesktopEditors"] $ws2
 # workspace 3
 assign [class="(?i)firefox"] $ws3
 assign [class="(?i)brave-browser"] $ws3
+assign [class="(?i)zen-alpha"] $ws3
 
 # workspace 4
 assign [class="(?i)discord"] $ws4
