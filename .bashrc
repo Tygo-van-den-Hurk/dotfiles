@@ -26,7 +26,6 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 alias cat='bat --color=always --line-range=:500 --pager=never'
 
@@ -91,7 +90,7 @@ fi
 
 if command -v zoxide >/dev/null 2>&1; then
     # export _ZO_ECHO="1"
-    export _ZO_FZF_OPTS="--preview 'ls {}'"
+    export _ZO_FZF_OPTS="--preview 'ls \$(echo $HOME | grep school)'"
     alias cd="z"
     eval "$(zoxide init bash)"
 fi
@@ -100,3 +99,9 @@ fi
 if command -v oh-my-posh >/dev/null 2>&1; then
     eval "$(oh-my-posh --init --shell bash --config ~/.poshthemes/Oh-My-Posh/similar-to-bash.omp.json)"
 fi
+
+if command -v fastfetch >/dev/null 2>&1; then
+    neofetch="fastfetch"
+fi
+
+eval "$(tailscale completion bash)"
