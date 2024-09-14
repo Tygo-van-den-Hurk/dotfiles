@@ -32,4 +32,4 @@ if [ -f "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh" ] ; then
 fi
 
 # cargo env
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
