@@ -25,4 +25,11 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+# Loading home manager var
+if [ -f "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh" ] ; then
+    source /etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh
+fi
+
+# cargo env
 . "$HOME/.cargo/env"

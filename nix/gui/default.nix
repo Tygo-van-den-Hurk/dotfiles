@@ -1,8 +1,8 @@
 ## The file to import if you want to import all my dotfiles related to GUIs.
 
-arguments @ { config, pkgs, lib, machine-settings, ... } : ( builtins.trace "Loading: ${toString ./.}..." { 
-
-  home = {
-
-  };
+arguments @ { config, pkgs, lib, machine-settings, ... } : ( builtins.trace "(HM) Loading: ${toString ./.}..." { 
+  imports = [
+    ./hyprland
+    ./i3wm
+  ];
 })
