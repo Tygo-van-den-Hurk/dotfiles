@@ -3,13 +3,16 @@
 # shows a preview of a file in the terminal
 function preview() {
 
+    # making sure at least 1 argument is given.
     if [ -z "$1" ]; then
         echo "Usage: preview <file>"
         return 1
     fi
 
+    # if it's a directory
     if [ -d "$1" ]; then
 
+        # if EZA is installed
         if command -v eza >/dev/null 2>&1; then
             eza_ignored_files="--ignore-glob 'Desktop|Documents|Downloads|Music|Pictures|Public|Templates|Videos|VirtualBox VMs'"
             eza_options=" --no-quotes --git --long --no-time --smart-group --group-directories-first --icons"
@@ -23,7 +26,6 @@ function preview() {
 
     filename=$(basename -- "$1")
     extension="${filename##*.}"
-
     if [[ "$filename" == "$extension" ]]; then # if no file extention then it's a text file
         bat --color=always --line-range=:500 --pager=never $1
         return 0
@@ -31,7 +33,11 @@ function preview() {
     
     case "$extension" in
         jpg | jpeg | png | gif | svg | ico )
-            tiv $1
+            if [[ "$TERM_PROGRAM" == "xterm-kitty" ]] || [[ "$TERM" == "xterm-kitty" ]]; then
+                kitten icat $1
+            else
+                tiv $1
+            fi
             ;;
         txt | md | \
         log | logs | \
