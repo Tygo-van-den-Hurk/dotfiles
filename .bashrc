@@ -90,7 +90,7 @@ fi
 
 if command -v zoxide >/dev/null 2>&1; then
     # export _ZO_ECHO="1"
-    export _ZO_FZF_OPTS="--preview 'ls \$(echo $HOME | grep school)'"
+    export _ZO_FZF_OPTS="--preview 'ls \$(echo \$\{\{\}} | cut -d $'\\t' -f2-)'"
     alias cd="z"
     eval "$(zoxide init bash)"
 fi
