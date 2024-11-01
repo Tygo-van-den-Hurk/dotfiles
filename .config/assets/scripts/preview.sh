@@ -42,7 +42,7 @@ function preview() {
         txt | md | \
         log | logs | \
         yml | yaml | config | conf |  toml | json | \
-        nix | java | sh | c | h | js | ts | rs )
+        nix | java | sh | c | h | js | ts | rs | ini )
             bat --color=always --line-range=:500 --pager=never $1
             ;;
         pdf)
