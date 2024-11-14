@@ -34,14 +34,14 @@ wireless tailscale0 {
 
 order += "wireless wlp0s20f3"
 wireless wlp0s20f3 {
-	format_up = "Wifi: Up (%essid)"
+	format_up = "Wifi: %essid"
 	format_down = "Wifi: Down"
 }
 
 order += "volume master"
 volume master {
-	format = "V: %volume"
-	format_muted = "V: muted (%volume)"
+	format = "Volume: %volume"
+	format_muted = "Volume: muted"
 	device = "default"
 } 
 
