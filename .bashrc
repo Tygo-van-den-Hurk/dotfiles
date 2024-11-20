@@ -6,23 +6,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-shopt -s globstar
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -65,15 +48,22 @@ source ~/.config/assets/scripts/preview.sh
 
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+shopt -s histappend     # append to the history file, don't overwrite it
+shopt -s checkwinsize   # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+shopt -s globstar       # If set, the pattern "**" used in a pathname expansion context will match all files and zero or more directories and subdirectories.
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    # enable programmable completion features (you don't need to enable
+    # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+    # sources /etc/bash.bashrc).
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 export PUID=$(id -u)
@@ -100,8 +90,14 @@ if command -v oh-my-posh >/dev/null 2>&1; then
     eval "$(oh-my-posh --init --shell bash --config ~/.poshthemes/Oh-My-Posh/similar-to-bash.omp.json)"
 fi
 
+# if fastfetch is installed
 if command -v fastfetch >/dev/null 2>&1; then
-    neofetch="fastfetch"
+    alias neofetch="fastfetch"
+fi
+
+# Makes kitty **actually** clear the screen and scrollback buffer
+if [ "$TERM" == "xterm-kitty" ]; then
+    alias clear="printf '\E[H\E[3J'"
 fi
 
 eval "$(tailscale completion bash)"
