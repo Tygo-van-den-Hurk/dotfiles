@@ -51,8 +51,7 @@ arguments @ { config, pkgs, lib, machine-settings, ... } : ( builtins.trace "(Ty
     sessionVariables = {
       TERMINAL = "kitty";
       EDITOR = "micro";
-      BROWSER = "firefox";
-      VISIAL = "code";
+      BROWSER = "zen";
     };
   };
 })
