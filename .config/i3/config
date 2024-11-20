@@ -86,6 +86,7 @@ assign [class="(?i)xterm"] $ws1
 
 # workspace 2
 assign [class="(?i)code"] $ws2
+assign [class="(?i)obsidian"] $ws2
 assign [class="(?i)kate"] $ws2
 assign [class="(?i)gimp"] $ws2
 assign [class="(?i)libreoffice"] $ws2
