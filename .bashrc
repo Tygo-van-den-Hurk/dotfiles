@@ -71,6 +71,10 @@ export GUID=$(id -g)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Overrides if packages are present ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
+if command -v code >/dev/null 2>&1; then
+    alias code.="code ."
+fi
+
 if command -v eza >/dev/null 2>&1; then
     eza_ignored_files="--ignore-glob 'Desktop|Documents|Downloads|Music|Pictures|Public|Templates|Videos|VirtualBox VMs'"
     eza_options=" --no-quotes --git --long --no-time --smart-group --group-directories-first --icons"
