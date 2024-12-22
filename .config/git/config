@@ -2,14 +2,38 @@
 	name = Tygo van den Hurk
 	email = 91738110+Tygo-van-den-Hurk@users.noreply.github.com
     signingkey = 1AAE628A2D49059717AEA7F87CA2CBB275058A44
+
 [credential "https://github.com"]
-	helper = 
 	helper = !/usr/bin/gh auth git-credential
+
 [init]
 	defaultBranch = main
+
 [commit]
     gpgSign = true
+
 [push]
 	autoSetupRemote = true
+
 [core]
 	editor = micro
+	pager = cat # "less -F"
+
+[color]
+    ui = auto    
+    status = auto
+    diff = auto  
+
+[alias]
+    s = status
+    c = checkout
+    b = branch
+    c = commit
+    l = log
+    f = fetch
+    p = push
+    log  = log --decorate=short --pretty=reference --graph --max-count=10
+    logs = log --decorate=short --pretty=reference --graph # --max-count=10
+
+# [pager]
+# 	log = false
