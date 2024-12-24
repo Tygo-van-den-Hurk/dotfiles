@@ -28,6 +28,8 @@ _darcs
 
 # Ignore all .nix files
 ^/*.nix
+\nix
+\default.nix
 
 # # Unignore the specific file
 # !.config/home-manager/home.nix
