@@ -824,6 +824,11 @@ matches:
     propagate_case: true
     word: true
 
+  - trigger: "tbf"
+    replace: "to be fair"
+    propagate_case: true
+    word: true
+
   - trigger: "tbh"
     replace: "to be honest"
     propagate_case: true
