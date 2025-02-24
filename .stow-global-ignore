@@ -1,5 +1,9 @@
 # Comments and blank lines are allowed.
 
+# ignore itself
+\.stow-global-ignore
+restow.sh
+
 RCS
 .+,v
 
@@ -27,9 +31,8 @@ _darcs
 \.vscode
 
 # Ignore all .nix files
-^/*.nix
-\nix
-\default.nix
+*.nix
+nix/
 
 # # Unignore the specific file
 # !.config/home-manager/home.nix
