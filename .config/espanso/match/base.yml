@@ -411,6 +411,11 @@ matches:
     propagate_case: true
     word: true
 
+  - trigger: "idm"
+    replace: "I don't mind"
+    propagate_case: true
+    word: true
+    
   - trigger: "iff"
     replace: "if and only if"
     propagate_case: true
