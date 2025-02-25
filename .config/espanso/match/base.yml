@@ -556,6 +556,11 @@ matches:
     replace: "'m"
     propagate_case: true
     word: true
+    
+  - trigger: "mb"
+    replace: "my bad"
+    propagate_case: true
+    word: true
 
   - trigger: "meta"
     replace: "metaform"
