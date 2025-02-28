@@ -540,6 +540,11 @@ matches:
     propagate_case: true
     word: true
 
+  - trigger: "lgtm"
+    replace: "looks good to me"
+    propagate_case: true
+    word: true
+    
   - trigger: "lm"
     replace: "laat maar"
     propagate_case: true
