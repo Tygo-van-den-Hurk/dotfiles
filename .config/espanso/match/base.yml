@@ -988,6 +988,11 @@ matches:
     propagate_case: true
     word: true
 
+  - trigger: "vid"
+    replace: "video"
+    propagate_case: true
+    word: true
+
   - trigger: "vnd"
     replace: "vanavond"
     propagate_case: true
