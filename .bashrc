@@ -104,6 +104,11 @@ if command -v fastfetch >/dev/null 2>&1; then
     alias neofetch="fastfetch"
 fi
 
+# if lazygit is installed
+if command -v lazygit >/dev/null 2>&1; then
+    alias lg="lazygit"
+fi
+
 # Makes kitty **actually** clear the screen and scrollback buffer
 if [ "$TERM" == "xterm-kitty" ]; then
     alias clear="printf '\E[H\E[3J'"
