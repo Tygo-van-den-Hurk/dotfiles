@@ -3,14 +3,20 @@
 	email = 91738110+Tygo-van-den-Hurk@users.noreply.github.com
     signingkey = 1AAE628A2D49059717AEA7F87CA2CBB275058A44
 
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+	
 [credential "https://github.com"]
-	helper = !/usr/bin/gh auth git-credential
+	helper = !/usr/bin/env gh auth git-credential
 
 [init]
 	defaultBranch = main
 
 [commit]
     gpgSign = true
+
+[tag]
+	gpgSign = true
 
 [push]
 	autoSetupRemote = true
@@ -21,9 +27,23 @@
 
 [color]
     ui = auto    
-    status = auto
-    diff = auto  
 
+[color "branch"]
+	current = yellow
+	local = green bold
+	remote = blue
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold reverse
+	new = green bold reverse
+
+[color "status"]
+	added = green
+	changed = yellow
+	untracked = green reverse
+  
 [alias]
     s = status
     c = checkout
@@ -32,10 +52,7 @@
     l = log
     f = fetch
     p = push
-    log  = log --decorate=short --pretty=reference --graph --max-count=10
-    logs = log --decorate=short --pretty=reference --graph # --max-count=10
+    logs = log --decorate=short --pretty=reference --graph
 
 # [pager]
 # 	log = false
-[url "git@github.com:"]
-	insteadOf = https://github.com/
