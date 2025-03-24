@@ -31,7 +31,7 @@ _darcs
 \.vscode
 
 # Ignore all .nix files
-*.nix
+.*\.nix
 nix/
 
 # # Unignore the specific file

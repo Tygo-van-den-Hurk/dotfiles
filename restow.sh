@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
 current_script_path="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
 ncolors=$(tput colors) # if the terminal supports color, print in color, otherwise don't
@@ -8,4 +9,4 @@ else
     echo "dotfiles are in $current_script_path, stowing those to $HOME."
 fi
 
-stow --dir="$current_script_path" --target="$HOME" --verbose=5 .
+stow --dir="$current_script_path" --target="$HOME" --verbose=5 --restow .
