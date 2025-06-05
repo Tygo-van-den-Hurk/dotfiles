@@ -1,0 +1,103 @@
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  inherit (lib) mkOption;
+  inherit (lib) mkIf;
+  inherit (lib) mkDefault;
+  inherit (lib) types;
+
+  inherit (types) bool;
+
+  program = "git";
+  category = "version-control";
+  type = "cli";
+in
+{
+  options.${type}.${category}.${program}.enable = mkOption {
+    description = "Whether to enable ${program}'s default config.";
+    default = config.${type}.${category}.enable;
+    type = bool;
+  };
+
+  config.programs.${program} = mkIf config.${type}.${category}.${program}.enable {
+    enable = mkDefault true;
+    userEmail = mkDefault "91738110+Tygo-van-den-Hurk@users.noreply.github.com";
+    userName = mkDefault "Tygo van den Hurk";
+
+    signing = {
+      key = mkDefault "1AAE628A2D49059717AEA7F87CA2CBB275058A44";
+      signByDefault = mkDefault true;
+      format = mkDefault "openpgp";
+    };
+
+    aliases = {
+      "logs" = mkDefault "log --decorate=short --pretty=reference --graph";
+      "s" = mkDefault "status";
+      "b" = mkDefault "branch";
+      "c" = mkDefault "commit";
+      "l" = mkDefault "log";
+      "f" = mkDefault "fetch";
+      "p" = mkDefault "push";
+    };
+
+    # things to globally ignore.
+    ignores = [
+      "**/node_modules/"
+      "**/*.zip"
+      "**/*.pdf"
+      "**/*.exe"
+    ];
+
+    attributes = [
+      "*.pdf diff=pdf"
+    ];
+
+    extraConfig = {
+
+      core = {
+        whitespace = mkDefault "trailing-space,space-before-tab";
+        editor = mkDefault "micro";
+      };
+
+      color = {
+        ui = mkDefault "auto";
+
+        branch = {
+          current = mkDefault "yellow";
+          local = mkDefault "green bold";
+          remote = mkDefault "blue";
+        };
+
+        diff = {
+          meta = mkDefault "yellow bold";
+          frag = mkDefault "magenta bold";
+          old = mkDefault "red bold reverse";
+          new = mkDefault "green bold reverse";
+        };
+
+        status = {
+          added = mkDefault "green";
+          changed = mkDefault "yellow";
+          untracked = mkDefault "green reverse";
+        };
+      };
+
+      url."git@github.com:".insteadOf = mkDefault "https://github.com/";
+      push.autoSetupRemote = mkDefault true;
+      init.defaultBranch = mkDefault "main";
+      pager.log = mkDefault false;
+    };
+  };
+
+  config.home.shellAliases = mkIf config.${type}.${category}.${program}.enable {
+    "g" = mkDefault "${pkgs.${program}}/bin/${program}";
+  };
+
+  imports = [
+    ./delta
+  ];
+}
