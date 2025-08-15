@@ -3,64 +3,65 @@ with pkgs;
 
 let
 
-  program = let
+  program =
+    let
 
-    script = builtins.readFile ./script.bash;
+      script = builtins.readFile ./script.bash;
 
-    dependencies = ''
-      # Makes sure that the dependencies are installed and preferred.
+      dependencies = ''
+        # Makes sure that the dependencies are installed and preferred.
 
-      function chafa() {
-        ${chafa}/bin/chafa "$@"
-        return $?
-      }
+        function chafa() {
+          ${chafa}/bin/chafa "$@"
+          return $?
+        }
 
-      function bat() {
-        ${bat}/bin/bat "$@"
-        return $?
-      }
+        function bat() {
+          ${bat}/bin/bat "$@"
+          return $?
+        }
 
-      function eza() {
-        ${eza}/bin/eza "$@"
-        return $?
-      }
+        function eza() {
+          ${eza}/bin/eza "$@"
+          return $?
+        }
 
-      function basename() {
-        ${toybox}/bin/basename "$@"
-        return $?
-      }
+        function basename() {
+          ${toybox}/bin/basename "$@"
+          return $?
+        }
 
-      function file() {
-        ${file}/bin/file "$@"
-        return $?
-      }
+        function file() {
+          ${file}/bin/file "$@"
+          return $?
+        }
 
-      function pdftoppm() {
-        ${poppler-utils}/bin/pdftoppm "$@"
-        return $?
-      }
+        function pdftoppm() {
+          ${poppler-utils}/bin/pdftoppm "$@"
+          return $?
+        }
 
-      function grep() {
-        ${toybox}/bin/grep "$@"
-        return $?
-      }
+        function grep() {
+          ${toybox}/bin/grep "$@"
+          return $?
+        }
 
-      function rm() {
-        ${toybox}/bin/rm "$@"
-        return $?
-      }
+        function rm() {
+          ${toybox}/bin/rm "$@"
+          return $?
+        }
 
-      function echo() {
-        ${toybox}/bin/echo "$@"
-        return $?
-      }
+        function echo() {
+          ${toybox}/bin/echo "$@"
+          return $?
+        }
 
+      '';
+    in
+    writeShellScriptBin "preview-script" ''
+      ${dependencies}
+      ${script}
     '';
-  in
-  writeShellScriptBin "preview-script" ''
-    ${dependencies}
-    ${script}
-  '';
 in
 
 stdenv.mkDerivation rec {
