@@ -3,5 +3,6 @@
 pkgs: {
   preview = import ./preview pkgs;
   hibernate = import ./hibernate pkgs;
+  nbcat = import ./nbcat pkgs;
   backuper = import ./backuper pkgs;
 }
