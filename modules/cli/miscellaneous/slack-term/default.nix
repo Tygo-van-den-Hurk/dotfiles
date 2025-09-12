@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -40,94 +41,117 @@ in
   };
 
   config.programs.bash = mkIf config.${type}.${category}.${program}.enable {
-    initExtra =
-      let
-        args = "args[@]"; # Needed because nix wont let me escape
-      in
-      ''
-        function ${program}() {
-          local CONFIG
-          local TOKEN
+    initExtra = ''
+      ${program}() (
+        set -e
 
-          if [ -n "$XDG_CONFIG_HOME" ]; then
-            CONFIG="$XDG_CONFIG_HOME/${program}/config"
-            TOKEN_FILE="$XDG_CONFIG_HOME/${program}/token"
-          else
-            CONFIG="$HOME/.config/${program}/config"
-            TOKEN_FILE="$HOME/.config/${program}/token"
+        local CONFIG
+        local TOKEN_FILE
+        local TOKEN
+
+        if [ -n "$XDG_CONFIG_HOME" ]; then
+          CONFIG="$XDG_CONFIG_HOME/${program}/config"
+          TOKEN_FILE="$XDG_CONFIG_HOME/${program}/token"
+        else
+          CONFIG="$HOME/.config/${program}/config"
+          TOKEN_FILE="$HOME/.config/${program}/token"
+        fi
+
+        if [ -f "$TOKEN_FILE" ]; then
+          TOKEN=$(<"$TOKEN_FILE")
+        else
+          TOKEN=""
+        fi
+
+        local args=()
+        local has_token=false
+        local has_config=false
+        local has_debug=false
+
+        for arg in "$@"; do
+          [[ "$arg" == "-token" ]] && has_token=true
+          [[ "$arg" == "-config" ]] && has_config=true
+          [[ "$arg" == "-debug" ]] && has_debug=true
+          args+=("$arg")
+        done
+
+        if ! $has_config; then
+          args+=("-config" "$CONFIG")
+        fi
+
+        if ! $has_token; then
+          if $has_debug; then
+            echo "$(date +"%Y/%m/%d %H:%M:%S") no token provided, using one from disk"
           fi
+          args+=("-token" "$TOKEN")
+        fi
 
-          TOKEN=$(cat "$TOKEN_FILE")
+        ${pkgs.${program}}/bin/${program} "''${args[@]}"
 
-          local args=()
-          local has_token=false
-          local has_config=false
-
-          for arg in "$@"; do
-            [[ "$arg" == "-token" ]] && has_token=true
-            [[ "$arg" == "-config" ]] && has_config=true
-            args+=("$arg")
-          done
-
-          if ! $has_config; then
-            args+=("-config" "$CONFIG")
-          fi
-
-          if ! $has_token; then
-            args+=("-token" "$TOKEN")
-          fi
-
-          command ${program} "${args}"
-        }
-      '';
+      )
+    '';
   };
 
   config.programs.zsh = mkIf config.${type}.${category}.${program}.enable {
-    initExtra =
-      let
-        args = "args[@]"; # Needed because nix wont let me escape
-      in
-      ''
-        ${program}() {
-          local CONFIG
-          local TOKEN
+    initExtra = ''
+      ${program}() (
+        set -e
 
-          if [[ -n $XDG_CONFIG_HOME ]]; then
-            CONFIG="$XDG_CONFIG_HOME/${program}/config"
-            TOKEN_FILE="$XDG_CONFIG_HOME/${program}/token"
-          else
-            CONFIG="$HOME/.config/${program}/config"
-            TOKEN_FILE="$HOME/.config/${program}/token"
+        local CONFIG
+        local TOKEN_FILE
+        local TOKEN
+
+        if [[ -n $XDG_CONFIG_HOME ]]; then
+          CONFIG="$XDG_CONFIG_HOME/${program}/config"
+          TOKEN_FILE="$XDG_CONFIG_HOME/${program}/token"
+        else
+          CONFIG="$HOME/.config/${program}/config"
+          TOKEN_FILE="$HOME/.config/${program}/token"
+        fi
+
+        if [ -f "$TOKEN_FILE" ]; then
+          TOKEN=$(<"$TOKEN_FILE")
+        else
+          TOKEN=""
+        fi
+
+        local args=()
+        local has_token=false
+        local has_config=false
+        local has_debug=false
+
+        for arg in "$@"; do
+          [[ "$arg" == "-token" ]] && has_token=true
+          [[ "$arg" == "-config" ]] && has_config=true
+          [[ "$arg" == "-debug" ]] && has_debug=true
+          args+=("$arg")
+        done
+
+        if ! $has_config; then
+          args+=("-config" "$CONFIG")
+        fi
+
+        if ! $has_token; then
+          if $has_debug; then
+            echo "$(date +"%Y/%m/%d %H:%M:%S") no token provided, using one from disk"
           fi
+          args+=("-token" "$TOKEN")
+        fi
 
-          TOKEN=$(cat "$TOKEN_FILE")
-
-          local args=()
-          local has_token=false
-          local has_config=false
-
-          for arg in "$@"; do
-            [[ "$arg" == "-token" ]] && has_token=true
-            [[ "$arg" == "-config" ]] && has_config=true
-            args+=("$arg")
-          done
-
-          if ! $has_config; then
-            args+=("-config" "$CONFIG")
-          fi
-
-          if ! $has_token; then
-            args+=("-token" "$TOKEN")
-          fi
-
-          command ${program} "${args}"
-        }
-      '';
+        ${pkgs.${program}}/bin/${program} "''${args[@]}"
+        return "$?
+      )
+    '';
   };
 
   config.programs.fish = mkIf config.${type}.${category}.${program}.enable {
     interactiveShellInit = ''
       function ${program}
+
+        set -l CONFIG
+        set -l TOKEN_FILE
+        set -l TOKEN
+
         if test -n "$XDG_CONFIG_HOME"
           set CONFIG "$XDG_CONFIG_HOME/${program}/config"
           set TOKEN_FILE "$XDG_CONFIG_HOME/${program}/token"
@@ -136,34 +160,49 @@ in
           set TOKEN_FILE "$HOME/.config/${program}/token"
         end
 
-        set TOKEN (cat "$TOKEN_FILE")
-        set args
-        set has_token false
-        set has_config false
+        if test -f "$TOKEN_FILE"
+          set TOKEN (cat "$TOKEN_FILE")
+        else
+          set TOKEN ""
+        end
+
+        set -l args
+        set -l has_token false
+        set -l has_config false
+        set -l has_debug false
 
         for arg in $argv
-          if test "$arg" = "-token"
-            set has_token true
-          else if test "$arg" = "-config"
-            set has_config true
+          switch $arg
+            case -token
+              set has_token true
+            case -config
+              set has_config true
+            case -debug
+              set has_debug true
           end
           set args $args $arg
         end
 
         if test $has_config = false
-          set args $args "-config" $CONFIG
+          set args $args -config $CONFIG
         end
 
         if test $has_token = false
-          set args $args "-token" $TOKEN
+          if test $has_debug = true
+            echo (date "+%Y/%m/%d %H:%M:%S") "no token provided, using one from disk"
+          end
+          if test -n "$TOKEN"
+              set args $args -token $TOKEN
+          end
         end
 
-        command ${program} $args
+        ${pkgs.${program}}/bin/${program} $args
+        return $status
       end
     '';
   };
 
   config.home.shellAliases = mkIf config.${type}.${category}.${program}.enable rec {
-    slack = "slack-term";
+    "slack" = program;
   };
 }
