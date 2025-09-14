@@ -31,6 +31,11 @@ in
       batgrep
       batwatch
     ];
+    config = {
+      map-syntax = [
+        "*.drawio:XML"
+      ];
+    };
   };
 
   config.home.shellAliases = mkIf config.${type}.${category}.${program}.enable {
