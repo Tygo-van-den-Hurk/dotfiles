@@ -22,5 +22,6 @@ in
     ./jq
     ./jqp
     ./octave
+    ./qalc
   ];
 }
