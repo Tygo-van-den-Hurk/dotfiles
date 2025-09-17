@@ -33,7 +33,7 @@ in
       enableBashIntegration = mkDefault true;
       enableFishIntegration = mkDefault true;
       enableZshIntegration = mkDefault true;
-      # mode = "no-rc";
+      mode = mkDefault "no-rc";
     };
 
     keybindings =
