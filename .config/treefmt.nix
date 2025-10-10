@@ -8,5 +8,6 @@ _: {
     mdformat.enable = true; # markdown formatting
     shfmt.enable = true; # Shell script formatting
     shellcheck.enable = true; # Shell script linting
+    stylua.enable = true; # Lue formatting
   };
 }
