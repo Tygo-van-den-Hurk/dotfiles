@@ -23,13 +23,49 @@ in
     type = bool;
   };
 
-  config = mkIf config.${type}.${category}.${program}.enable {
+  config.home = mkIf config.${type}.${category}.${program}.enable {
 
-    home.shellAliases."calc" = mkDefault program;
-    home.shellAliases."calculate" = mkDefault program;
-    home.shellAliases."calc:" = mkDefault program;
-    home.shellAliases."calculate:" = mkDefault program;
+    shellAliases."calc" = mkDefault "set -f; ${program}_function";
+    shellAliases."calculate" = mkDefault "set -f; ${program}_function";
+    shellAliases."calc:" = mkDefault "set -f; ${program}_function";
+    shellAliases."calculate:" = mkDefault "set -f; ${program}_function";
+    shellAliases.${program} = mkDefault "set -f; ${program}_function";
 
-    home.packages = with pkgs; [ libqalculate ];
+    packages = with pkgs; [ libqalculate ];
   };
+
+
+  config.programs.bash = mkIf config.${type}.${category}.${program}.enable {
+    initExtra = ''
+      ${program}_function() {
+        ${pkgs.libqalculate}/bin/${program} "$@"
+        local status="$?"
+        set +f # enable globing
+        return "$status"
+      }
+    '';
+  };
+
+  config.programs.zsh = mkIf config.${type}.${category}.${program}.enable {
+    initExtra = ''
+      ${program}_function() {
+        ${pkgs.libqalculate}/bin/${program} "$@"
+        local status="$?"
+        set +f # enable globing
+        return "$status"
+      }
+    '';
+  };
+
+  config.programs.fish = mkIf config.${type}.${category}.${program}.enable {
+    interactiveShellInit = ''
+      function ${program}_function
+        ${pkgs.libqalculate}/bin/${program} "$@"
+        set exit_code $status
+        set +f # enable globing
+        return "$exit_code"
+      end
+    '';
+  };
+
 }
