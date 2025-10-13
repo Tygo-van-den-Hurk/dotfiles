@@ -28,5 +28,6 @@ in
     ./bash
     ./fish
     ./nushell
+    ./zsh
   ];
 }
