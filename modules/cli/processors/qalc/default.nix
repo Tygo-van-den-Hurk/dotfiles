@@ -34,7 +34,6 @@ in
     packages = with pkgs; [ libqalculate ];
   };
 
-
   config.programs.bash = mkIf config.${type}.${category}.${program}.enable {
     initExtra = ''
       ${program}_function() {
