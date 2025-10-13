@@ -24,6 +24,7 @@ in
 
   config.programs.${program} = mkIf config.${type}.${category}.${program}.enable {
     enableCompletion = mkDefault true;
+    initExtra = builtins.readFile ./extra-init.bash;
     enable = mkDefault true;
     historyIgnore = [
       "ls"
