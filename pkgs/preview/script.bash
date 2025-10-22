@@ -167,7 +167,23 @@ function display_image() {
 
 # Displays the ascii text provided.
 function display_text() {
-  bat --style=plain --color="$color" --pager=never "$@"
+  local filename
+  filename=$(basename -- "$argument")
+  if [[ $filename == *.* ]]; then
+    local extension="${filename##*.}"
+  else
+    local extension=""
+  fi
+
+  case "$extension" in
+  md | markdown)
+    glow "$@"
+    ;;
+  *)
+    bat --style=plain --color="$color" --pager=never "$@"
+    ;;
+  esac
+
   return "$?"
 }
 

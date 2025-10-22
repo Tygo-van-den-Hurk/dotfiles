@@ -21,6 +21,11 @@ let
           return $?
         }
 
+        function glow() {
+          ${glow}/bin/glow "$@"
+          return $?
+        }
+
         function eza() {
           ${eza}/bin/eza "$@"
           return $?
