@@ -3,7 +3,7 @@
 
 set -e
 
-version_of_the_program="v0.5.0"
+version_of_the_program="v0.6.0"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Exit Codes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -178,6 +178,9 @@ function display_text() {
   case "$extension" in
   md | markdown)
     glow "$@"
+    ;;
+  ipynb)
+    nbcat "$@"
     ;;
   *)
     bat --style=plain --color="$color" --pager=never "$@"

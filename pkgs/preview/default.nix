@@ -11,6 +11,11 @@ let
       dependencies = ''
         # Makes sure that the dependencies are installed and preferred.
 
+        function nbcat() {
+          ${nbcat}/bin/nbcat "$@"
+          return $?
+        }
+
         function chafa() {
           ${chafa}/bin/chafa "$@"
           return $?
