@@ -25,7 +25,7 @@ _preview() {
   fi
 
   # otherwise, suggest files/dirs
-  mapfile -t COMPREPLY < <(compgen -df "$opts" -- "$cur")
+  mapfile -t COMPREPLY < <(compgen -df -- "$cur")
   return 0
 }
 
