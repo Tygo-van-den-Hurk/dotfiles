@@ -30,6 +30,12 @@ _preview() {
 
   # otherwise, suggest files/dirs
   mapfile -t COMPREPLY < <(compgen -df -- "$cur")
+
+  # prevent space after directories
+  if compgen -d -- "$cur" >/dev/null; then
+    compopt -o nospace
+  fi
+
   return 0
 }
 
