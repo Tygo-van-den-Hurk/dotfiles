@@ -147,10 +147,25 @@ if [[ $verbose == "true" ]]; then
   echo "- color=$color" >&2
 fi
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Helper Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+# Gets the file extension of a file path
+function get_file_extension() {
+  local filename
+  filename=$(basename -- "$1")
+  if [[ $filename == *.* ]]; then
+    echo "${filename##*.}"
+  else
+    echo ""
+  fi
+}
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Function wrappers to display certain types ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 # Displays the image provided.
 function display_image() {
+  local extension
+  extension=$(get_file_extension "$1")
 
   extra_arguments=()
   if [[ $ascii == "true" ]]; then
@@ -161,19 +176,22 @@ function display_image() {
     extra_arguments+=("--colors=2" "--format=symbols")
   fi
 
-  chafa "$@" "${extra_arguments[@]}"
+  case "$extension" in
+  gif)
+    chafa "$@" "${extra_arguments[@]}" --duration=5
+    ;;
+  *)
+    chafa "$@" "${extra_arguments[@]}"
+    ;;
+  esac
+
   return "$?"
 }
 
 # Displays the ascii text provided.
 function display_text() {
-  local filename
-  filename=$(basename -- "$argument")
-  if [[ $filename == *.* ]]; then
-    local extension="${filename##*.}"
-  else
-    local extension=""
-  fi
+  local extension
+  extension=$(get_file_extension "$1")
 
   case "$extension" in
   md | markdown)
@@ -188,6 +206,33 @@ function display_text() {
   esac
 
   return "$?"
+}
+
+# Displays the ascii text provided.
+function display_binary() {
+  local extension
+  extension=$(get_file_extension "$1")
+
+  # trying to interpret binary files
+  case "$extension" in
+  gif)
+    display_image "$argument" --duration=5
+    ;;
+  pdf)
+    local format location
+    format="png"
+    location="/tmp/preview-pdf-to-image"
+    pdftoppm -singlefile "$argument" "-$format" "$location" -q
+    display_image "$location.$format"
+    rm "$location.$format"
+    ;;
+  *)
+    echo "Unknown Binary file type: '$argument'."
+    echo "Attempted to match on extension '$extension' but found no result."
+    ;;
+  esac
+
+  return $?
 }
 
 # Displays the ascii text provided.
@@ -220,59 +265,36 @@ fi
 # looping over all directories and files
 for argument in "${files_and_dirs[@]}"; do
 
+  if [ ! -e "$argument" ]; then
+    echo "No such file or directory: $argument"
+    continue
+  fi
+
   if [ -d "$argument" ]; then
     display_directory "$argument"
     continue
   fi
 
-  # if it is not a directory, and not a file. Then skip it.
-  if [ ! -f "$argument" ]; then
-    echo "Not a file or directory: $argument"
+  if [[ "$(file --dereference "$argument" | grep --count --ignore-case 'image')" -eq "1" ]]; then
+    display_image "$argument"
     continue
   fi
 
-  # Get the extension of the file.
-  filename=$(basename -- "$argument")
-  if [[ $filename == *.* ]]; then
-    extension="${filename##*.}"
-  else
-    extension=""
+  if [[ "$(file --dereference "$argument" | grep --count --ignore-case 'empty')" -eq "1" ]]; then
+    echo "The file '$argument' is empty..."
+    continue
   fi
 
-  if [[ "$(file --dereference "$argument" | grep --count 'empty')" -eq "1" ]]; then
+  if [[ "$(file --dereference "$argument" | grep --count --ignore-case 'short')" -eq "1" ]]; then
     echo "The file '$argument' is empty..."
     continue
-  elif [[ "$(file --dereference "$argument" | grep --count 'short')" -eq "1" ]]; then
-    echo "The file '$argument' is empty..."
-    continue
-  elif [[ "$(file --dereference "$argument" | grep --count 'text')" -eq "1" ]]; then
+  fi
+
+  if [[ "$(file --dereference "$argument" | grep --count --ignore-case 'text')" -eq "1" ]]; then
     display_text "$argument"
     continue
   fi
 
-  # trying to interpret binary files
-  case "$extension" in
-  jpg | jpeg | png | ico | bmp | tiff | webp | PBM | PGM | PPM)
-    display_image "$argument"
-    continue
-    ;;
-  gif)
-    display_image "$argument" --duration=5
-    continue
-    ;;
-  pdf)
-    format="png"
-    location="/tmp/preview-pdf-to-image"
-    pdftoppm -singlefile "$argument" "-$format" "$location" -q
-    display_image "$location.$format"
-    rm "$location.$format"
-    continue
-    ;;
-  *)
-    echo "Unknown Binary file type: '$argument'."
-    echo "Attempted to match on extension '$extension' but found no result."
-    ;;
-  esac
 done
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #

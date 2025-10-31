@@ -36,11 +36,6 @@ let
           return $?
         }
 
-        function basename() {
-          ${toybox}/bin/basename "$@"
-          return $?
-        }
-
         function file() {
           ${file}/bin/file "$@"
           return $?
@@ -52,7 +47,12 @@ let
         }
 
         function grep() {
-          ${toybox}/bin/grep "$@"
+          ${gnugrep}/bin/grep "$@"
+          return $?
+        }
+
+        function basename() {
+          ${toybox}/bin/basename "$@"
           return $?
         }
 
