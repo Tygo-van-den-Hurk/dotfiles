@@ -8,14 +8,18 @@ _preview() {
 
   case "$prev" in
   -c | --color | --colour)
+    local opts="never auto always"
     mapfile -t COMPREPLY < <(compgen -W "$opts" -- "$cur")
     return 0
     ;;
   esac
 
   # suggest flags if current word starts with -
-  if [[ $cur == --color=* || $cur == --colour=* ]]; then
-    local opts="--color=auto --color=never --color=always --colour=auto --colour=never --colour=always"
+  if [[ $cur == --color=* ]]; then
+    local opts="--color=auto --color=never --color=always"
+    mapfile -t COMPREPLY < <(compgen -W "$opts" -- "$cur")
+  elif [[ $cur == --color=* || $cur == --colour=* ]]; then
+    local opts="--colour=auto --colour=never --colour=always"
     mapfile -t COMPREPLY < <(compgen -W "$opts" -- "$cur")
     return 0
   elif [[ $cur == -* ]]; then
