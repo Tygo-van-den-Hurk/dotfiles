@@ -37,8 +37,6 @@
     stylix = {
       url = "github:nix-community/stylix/release-25.05";
       inputs = {
-        git-hooks.follows = "pre-commit-hooks";
-        flake-compat.follows = "flake-compat";
         systems.follows = "systems";
       };
     };
