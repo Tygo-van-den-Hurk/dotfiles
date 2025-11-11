@@ -22,6 +22,10 @@ in
 
   # Global config that does not depend on anything.
   config.home = mkIf config.${type}.enable {
+    shellAliases = {
+      c = "clear";
+      ear = ":";
+    };
     packages = with pkgs; [
       undollar
     ];
