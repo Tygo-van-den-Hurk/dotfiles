@@ -24,6 +24,7 @@ in
   config.home = mkIf config.${type}.enable {
     shellAliases = {
       c = "clear";
+      ckear = "clear";
       ear = ":";
     };
     packages = with pkgs; [

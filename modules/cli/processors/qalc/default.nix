@@ -25,6 +25,7 @@ in
 
   config.home = mkIf config.${type}.${category}.${program}.enable {
 
+    shellAliases."clac" = mkDefault "set -f; ${program}_function";
     shellAliases."calc" = mkDefault "set -f; ${program}_function";
     shellAliases."calculate" = mkDefault "set -f; ${program}_function";
     shellAliases."calc:" = mkDefault "set -f; ${program}_function";
