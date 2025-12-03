@@ -4,13 +4,14 @@
   hooks = {
 
     # Run health checks on your flake-powered Nix projects.
-    flake-checker = {
-      enable = true;
-      stages = [
-        "pre-push"
-        "manual"
-      ];
-    };
+    #! kind of annoying as it does not allow the stable branch atm
+    # flake-checker = {
+    #   enable = false;
+    #   stages = [
+    #     "pre-push"
+    #     "manual"
+    #   ];
+    # };
 
     # Check if the flake passes all it's checks. (takes a long time)
     nix-flake-check = {
