@@ -25,23 +25,11 @@ in
 
   config.programs.${program} = mkIf config.${type}.${category}.${program}.enable {
     enable = mkDefault true;
-    userEmail = mkDefault "91738110+Tygo-van-den-Hurk@users.noreply.github.com";
-    userName = mkDefault "Tygo van den Hurk";
 
     signing = {
       key = mkDefault "1AAE628A2D49059717AEA7F87CA2CBB275058A44";
       signByDefault = mkDefault true;
       format = mkDefault "openpgp";
-    };
-
-    aliases = {
-      "logs" = mkDefault "log --decorate=short --pretty=reference --graph";
-      "s" = mkDefault "status";
-      "b" = mkDefault "branch";
-      "c" = mkDefault "commit";
-      "l" = mkDefault "log";
-      "f" = mkDefault "fetch";
-      "p" = mkDefault "push";
     };
 
     # things to globally ignore.
@@ -56,7 +44,22 @@ in
       "*.pdf diff=pdf"
     ];
 
-    extraConfig = {
+    settings = {
+
+      user = {
+        name = mkDefault "Tygo van den Hurk";
+        email = mkDefault "91738110+Tygo-van-den-Hurk@users.noreply.github.com";
+      };
+
+      aliases = {
+        "logs" = mkDefault "log --decorate=short --pretty=reference --graph";
+        "s" = mkDefault "status";
+        "b" = mkDefault "branch";
+        "c" = mkDefault "commit";
+        "l" = mkDefault "log";
+        "f" = mkDefault "fetch";
+        "p" = mkDefault "push";
+      };
 
       core = {
         whitespace = mkDefault "trailing-space,space-before-tab";

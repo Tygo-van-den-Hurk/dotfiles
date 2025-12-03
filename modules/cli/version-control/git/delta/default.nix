@@ -24,17 +24,18 @@ in
   };
 
   config.programs.${program} = mkIf config.${type}.${category}.${program}.${helper}.enable {
-    extraConfig.merge.conflictstyle = mkDefault "zdiff3";
-    ${helper} = mkIf config.${type}.${category}.${program}.${helper}.enable {
-      enable = mkDefault true;
-      options = {
-        line-numbers = mkDefault true;
-        hyperlinks = mkDefault true;
-        hyperlinks-file-link-format = mkDefault "vscode://file/{path}:{line}";
-        side-by-side = mkDefault true;
-        line-numbers-left-format = mkDefault "";
-        line-numbers-right-format = mkDefault "│ ";
-      };
+    settings.merge.conflictstyle = mkDefault "zdiff3";
+  };
+
+  config.programs.${helper} = mkIf config.${type}.${category}.${program}.${helper}.enable {
+    enable = mkDefault true;
+    options = {
+      line-numbers = mkDefault true;
+      hyperlinks = mkDefault true;
+      hyperlinks-file-link-format = mkDefault "vscode://file/{path}:{line}";
+      side-by-side = mkDefault true;
+      line-numbers-left-format = mkDefault "";
+      line-numbers-right-format = mkDefault "│ ";
     };
   };
 }

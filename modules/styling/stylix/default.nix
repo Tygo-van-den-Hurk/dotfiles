@@ -59,7 +59,7 @@ in
         sansSerif = monospace;
         monospace.package = nerd-fonts.open-dyslexic;
         monospace.name = "OpenDyslexicM Nerd Font Mono";
-        emoji.package = noto-fonts-emoji;
+        emoji.package = noto-fonts-color-emoji;
         emoji.name = "Noto Color Emoji";
       };
   };
