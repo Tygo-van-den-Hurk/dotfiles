@@ -6,7 +6,6 @@
 }:
 let
   inherit (lib) mkOption;
-  inherit (lib) mkDefault;
   inherit (lib) mkIf;
   inherit (lib) types;
 
