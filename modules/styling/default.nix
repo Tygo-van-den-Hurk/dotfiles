@@ -17,6 +17,7 @@ in
   };
 
   imports = [
+    ./fonts
     ./gtk
     ./qt
     ./stylix

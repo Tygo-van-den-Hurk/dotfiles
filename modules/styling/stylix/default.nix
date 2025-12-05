@@ -25,6 +25,7 @@ in
   config.${category} = mkIf config.${type}.${category}.enable {
 
     enable = mkDefault true;
+    autoEnable = mkDefault true;
     polarity = mkDefault "dark";
     image = mkDefault (
       pkgs.fetchurl {
