@@ -90,6 +90,8 @@ in
       };
 
       url."git@github.com:".insteadOf = mkDefault "https://github.com/";
+      url."git@bitbucket.org:".insteadOf = mkDefault "https://bitbucket.org/";
+
       push.autoSetupRemote = mkDefault true;
       init.defaultBranch = mkDefault "main";
       pager.log = mkDefault false;
