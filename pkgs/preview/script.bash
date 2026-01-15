@@ -195,7 +195,7 @@ function display_text() {
 
   case "$extension" in
   md | markdown)
-    glow "$@"
+    glow --width "$(tput cols)" "$@"
     ;;
   ipynb)
     nbcat "$@"
