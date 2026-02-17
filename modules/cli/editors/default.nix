@@ -21,5 +21,6 @@ in
 
   imports = [
     ./glow
+    ./micro
   ];
 }
