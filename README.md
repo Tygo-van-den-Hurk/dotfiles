@@ -1,4 +1,5 @@
-> This repository will be used as a template for future school projects.
+> [!NOTE]
+> This repository is archived because I've moved my dotfiles into [my NixOS setup](https://github.com/Tygo-van-den-Hurk/NixOS/).
 
 <br>
 <div align="center">
